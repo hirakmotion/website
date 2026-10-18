@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   // Static export: the site builds to plain files in `out/` and can be hosted
   // anywhere (Vercel, Netlify, Cloudflare Pages, GitHub Pages, any web server).
   output: "export",
+  // Set by the GitHub Pages workflow when the site is served from /<repo>.
+  basePath: process.env.PAGES_BASE_PATH || undefined,
   images: { unoptimized: true },
   reactStrictMode: true,
 };
