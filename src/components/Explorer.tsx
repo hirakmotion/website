@@ -394,18 +394,22 @@ export default function Explorer() {
                     <span className="ml-2 text-2xl font-normal text-ink-3">Nm</span>
                   </p>
                 </div>
-                <dl className="grid grid-cols-3 gap-6 text-left">
-                  <div>
+                <dl className="grid grid-cols-3 gap-4 text-left sm:gap-6">
+                  {/* Values sit on a shared baseline even when a label wraps to two lines. */}
+                  <div className="flex flex-col">
                     <dt className="text-xs text-ink-3">Top speed</dt>
-                    <dd className="mt-1 text-xl font-semibold text-ink">{fmt(r.top)} rpm</dd>
+                    <dd className="mt-auto pt-1 text-lg font-semibold text-ink sm:text-xl">
+                      {fmt(r.top)}
+                      <span className="ml-1 text-sm font-normal text-ink-3">rpm</span>
+                    </dd>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <dt className="text-xs text-ink-3">Reflected inertia</dt>
-                    <dd className="mt-1 text-xl font-semibold text-ink">×{fmt(r.inertia)}</dd>
+                    <dd className="mt-auto pt-1 text-lg font-semibold text-ink sm:text-xl">×{fmt(r.inertia)}</dd>
                   </div>
-                  <div>
+                  <div className="flex flex-col">
                     <dt className="text-xs text-ink-3">Efficiency</dt>
-                    <dd className="mt-1 text-xl font-semibold text-ink">≈{Math.round(r.eff * 100)}%</dd>
+                    <dd className="mt-auto pt-1 text-lg font-semibold text-ink sm:text-xl">≈{Math.round(r.eff * 100)}%</dd>
                   </div>
                 </dl>
               </div>

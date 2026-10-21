@@ -59,14 +59,13 @@ export default function Hero() {
     if (outRef.current) outRef.current.textContent = outputRev.toFixed(3);
   }, []);
 
-  const fade = (delay: number) =>
-    reduce
-      ? {}
-      : {
-          initial: { opacity: 0, y: 18 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const, delay },
-        };
+  // The static HTML ships the hidden starting state, so always animate to visible;
+  // reduced motion just makes it instant instead of skipping it (which left the text invisible).
+  const fade = (delay: number) => ({
+    initial: { opacity: 0, y: 18 },
+    animate: { opacity: 1, y: 0 },
+    transition: reduce ? { duration: 0 } : { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const, delay },
+  });
 
   return (
     <section id="top" className="relative overflow-hidden pt-16">
@@ -128,43 +127,46 @@ export default function Hero() {
             )}
           </div>
 
-          <div className="absolute left-4 top-4 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-ink-3">
-            <p className="text-ink-2">Cycloidal reducer</p>
-            <p>Live kinematics</p>
+          {/* Caption and ratio switch share a row; the switch wraps under the caption on narrow screens. */}
+          <div className="absolute inset-x-2 top-2 flex flex-wrap items-start justify-between gap-2 sm:inset-x-4 sm:top-4">
+            <div className="font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-ink-3">
+              <p className="text-ink-2">Cycloidal reducer</p>
+              <p>Live kinematics</p>
+            </div>
+
+            <div className="flex gap-1 rounded-full border border-line-strong bg-bg/70 p-1 backdrop-blur" role="group" aria-label="Reduction ratio">
+              {RATIOS.map((r) => (
+                <button
+                  key={r.pins}
+                  type="button"
+                  aria-pressed={pins === r.pins}
+                  onClick={() => setPins(r.pins)}
+                  className={`whitespace-nowrap rounded-full px-2.5 py-1 font-mono text-[11px] tracking-wider transition-colors ${
+                    pins === r.pins ? "bg-copper text-bg" : "text-ink-2 hover:text-ink"
+                  }`}
+                >
+                  {r.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="absolute right-4 top-4 flex gap-1 rounded-full border border-line-strong bg-bg/70 p-1 backdrop-blur" role="group" aria-label="Reduction ratio">
-            {RATIOS.map((r) => (
-              <button
-                key={r.pins}
-                type="button"
-                aria-pressed={pins === r.pins}
-                onClick={() => setPins(r.pins)}
-                className={`rounded-full px-2.5 py-1 font-mono text-[11px] tracking-wider transition-colors ${
-                  pins === r.pins ? "bg-copper text-bg" : "text-ink-2 hover:text-ink"
-                }`}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
-
-          <dl className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line font-mono text-[11px] uppercase tracking-[0.12em]">
-            <div className="bg-bg/80 px-3 py-2.5 backdrop-blur">
+          <dl className="absolute inset-x-2 bottom-2 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line font-mono text-[11px] uppercase tracking-[0.12em] sm:inset-x-4 sm:bottom-4">
+            <div className="bg-bg/80 px-2.5 py-2.5 backdrop-blur sm:px-3">
               <dt className="text-ink-3">Input</dt>
-              <dd className="mt-1 text-sm normal-case tracking-normal text-ink tabular-nums">
+              <dd className="mt-1 whitespace-nowrap text-xs normal-case tracking-normal text-ink tabular-nums sm:text-sm">
                 <span ref={inRef}>0.00</span> rev
               </dd>
             </div>
-            <div className="bg-bg/80 px-3 py-2.5 backdrop-blur">
+            <div className="bg-bg/80 px-2.5 py-2.5 backdrop-blur sm:px-3">
               <dt className="text-ink-3">Output</dt>
-              <dd className="mt-1 text-sm normal-case tracking-normal text-copper-2 tabular-nums">
+              <dd className="mt-1 whitespace-nowrap text-xs normal-case tracking-normal text-copper-2 tabular-nums sm:text-sm">
                 <span ref={outRef}>0.000</span> rev
               </dd>
             </div>
-            <div className="bg-bg/80 px-3 py-2.5 backdrop-blur">
+            <div className="bg-bg/80 px-2.5 py-2.5 backdrop-blur sm:px-3">
               <dt className="text-ink-3">Ratio</dt>
-              <dd className="mt-1 text-sm normal-case tracking-normal text-ink tabular-nums">{pins - 1} : 1</dd>
+              <dd className="mt-1 whitespace-nowrap text-xs normal-case tracking-normal text-ink tabular-nums sm:text-sm">{pins - 1} : 1</dd>
             </div>
           </dl>
         </motion.div>

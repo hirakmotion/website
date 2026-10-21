@@ -125,32 +125,28 @@ export default function Platform() {
           lead="BLDC motors, servos and actuators share the same core: electromagnetics, power electronics, control firmware and gearing. We build that core once, then shape it into whatever your machine needs."
         />
 
-        <div className="mt-16 grid gap-4 md:grid-cols-2">
+        <div className="mt-16 grid gap-4 lg:grid-cols-2">
           {PRODUCTS.map((p, i) => (
             <Reveal key={p.code} delay={i * 0.06}>
-              <SpotlightCard className="flex h-full flex-col p-7 md:p-8">
+              <SpotlightCard className="flex h-full flex-col p-6 sm:p-7 md:p-8">
                 <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">
-                      {p.code} · {p.kind}
-                    </p>
-                    <h3 className="mt-3 text-2xl font-semibold tracking-[-0.02em] md:text-3xl">{p.name}</h3>
-                  </div>
+                  <p className="min-w-0 pt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3">
+                    {p.code} · {p.kind}
+                  </p>
                   <StatusPill tone={p.tone}>{p.status}</StatusPill>
                 </div>
-                <div className="mt-6 grid flex-1 grid-cols-[1fr_auto] items-end gap-6">
-                  <div>
-                    <p className="text-pretty leading-relaxed text-ink-2">{p.body}</p>
-                    <ul className="mt-5 space-y-2 text-sm text-ink-2">
-                      {p.points.map((pt) => (
-                        <li key={pt} className="flex gap-2.5">
-                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-copper" />
-                          {pt}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="h-24 w-24 text-copper-2 opacity-80 md:h-28 md:w-28" aria-hidden="true">
+                <h3 className="mt-3 text-2xl font-semibold tracking-[-0.02em] md:text-3xl">{p.name}</h3>
+                <p className="mt-4 text-pretty leading-relaxed text-ink-2">{p.body}</p>
+                <div className="mt-5 grid flex-1 grid-cols-[minmax(0,1fr)_auto] items-end gap-5">
+                  <ul className="space-y-2 text-sm text-ink-2">
+                    {p.points.map((pt) => (
+                      <li key={pt} className="flex gap-2.5">
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-copper" />
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="h-20 w-20 text-copper-2 opacity-80 sm:h-24 sm:w-24 md:h-28 md:w-28" aria-hidden="true">
                     {p.art}
                   </div>
                 </div>
@@ -158,7 +154,7 @@ export default function Platform() {
             </Reveal>
           ))}
 
-          <Reveal className="md:col-span-2">
+          <Reveal className="lg:col-span-2">
             <SpotlightCard
               as="a"
               href="#custom"

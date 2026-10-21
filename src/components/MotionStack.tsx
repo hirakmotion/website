@@ -129,7 +129,7 @@ export default function MotionStack() {
         <Reveal className="mt-16">
           <div className="relative">
             {/* Hirak bracket over layers 2-5 (desktop) */}
-            <div className="pointer-events-none absolute -top-9 left-[16.66%] right-[16.66%] hidden md:block" aria-hidden="true">
+            <div className="pointer-events-none absolute -top-9 left-[16.66%] right-[16.66%] hidden lg:block" aria-hidden="true">
               <div className="h-3 rounded-t-lg border-x border-t border-copper/70" />
               <p className="absolute -top-3 left-1/2 -translate-x-1/2 bg-bg px-3 font-mono text-[11px] uppercase tracking-[0.2em] text-copper-2">
                 Hirak Motion
@@ -137,11 +137,11 @@ export default function MotionStack() {
             </div>
 
             {/* Current flowing through the chain */}
-            <div className="absolute left-[8%] right-[8%] top-[46px] hidden h-px overflow-hidden bg-line-strong md:block" aria-hidden="true">
+            <div className="absolute left-[8%] right-[8%] top-[46px] hidden h-px overflow-hidden bg-line-strong lg:block" aria-hidden="true">
               <div className="animate-flow h-px w-1/4 bg-gradient-to-r from-transparent via-copper-2 to-transparent" />
             </div>
 
-            <ol className="relative grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6 md:gap-4">
+            <ol className="relative grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
               {LAYERS.map((l, i) => {
                 const selected = l.id === active;
                 const ours = l.owner === "hirak";

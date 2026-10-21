@@ -124,7 +124,7 @@ export function Logo({ className = "" }: { className?: string }) {
 export function StatusPill({ tone = "neutral", children }: { tone?: "live" | "active" | "neutral"; children: ReactNode }) {
   const dot = tone === "live" ? "bg-copper animate-pulse-dot" : tone === "active" ? "bg-copper-2" : "bg-ink-3";
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-bg/60 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-2">
+    <span className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-line-strong bg-bg/60 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-2">
       <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
       {children}
     </span>

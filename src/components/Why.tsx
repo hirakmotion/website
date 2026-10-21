@@ -61,11 +61,11 @@ export default function Why() {
           lead="India has the engineers, the ore and the ambition. What it imports is the layer in between: the motors, drives and actuators that make machines move. We are building that layer here, and we intend to win on trust, not just on price."
         />
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 xl:grid-cols-4">
           {STATS.map((s, i) => (
             <Reveal key={s.value} delay={i * 0.06} className="bg-bg">
               <div className="flex h-full flex-col p-7">
-                <p className="text-5xl font-semibold tracking-[-0.04em] text-ink">{s.value}</p>
+                <p className="whitespace-nowrap text-5xl font-semibold tracking-[-0.04em] text-ink">{s.value}</p>
                 <p className="mt-4 flex-1 text-pretty leading-relaxed text-ink-2">{s.label}</p>
                 <p className="mt-6 font-mono text-[10px] uppercase leading-relaxed tracking-[0.14em] text-ink-3">{s.source}</p>
               </div>

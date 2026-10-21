@@ -143,7 +143,7 @@ export default function Contact() {
                 <label htmlFor="specs" className="text-sm text-ink-2">
                   Torque and speed needs <span className="text-ink-3">(optional)</span>
                 </label>
-                <input id="specs" name="specs" placeholder="e.g. 40 Nm peak, 15 Nm continuous, 120 rpm" className={`${field} mt-2`} />
+                <input id="specs" name="specs" placeholder="e.g. 40 Nm peak, 120 rpm" className={`${field} mt-2`} />
               </div>
               <div className="sm:col-span-2">
                 <label htmlFor="message" className="text-sm text-ink-2">

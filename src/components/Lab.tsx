@@ -122,14 +122,14 @@ export default function Lab() {
           lead="Hardware is earned one iteration at a time. This is our build log, kept in the open."
         />
 
-        <div className="mt-16 grid gap-4 md:grid-cols-2">
+        <div className="mt-16 grid gap-4 lg:grid-cols-2">
           {ENTRIES.map((e, i) => (
             <Reveal key={e.id} delay={i * 0.06}>
-              <SpotlightCard className="grid h-full grid-cols-1 gap-6 p-6 sm:grid-cols-[140px_1fr] md:p-7">
+              <SpotlightCard className="grid h-full grid-cols-1 gap-6 p-6 sm:grid-cols-[140px_minmax(0,1fr)] md:p-7">
                 <div className="mx-auto h-36 w-36 text-copper-2 sm:h-[140px] sm:w-[140px]" aria-hidden="true">
                   {e.art}
                 </div>
-                <div className="flex flex-col">
+                <div className="flex min-w-0 flex-col">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="font-mono text-xs tracking-[0.14em] text-ink-3">{e.id}</p>
                     <StatusPill tone={e.tone}>{e.status}</StatusPill>
@@ -137,7 +137,7 @@ export default function Lab() {
                   <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em]">{e.title}</h3>
                   <dl className="mt-4 grid gap-1.5 text-sm">
                     {e.specs.map(([k, v]) => (
-                      <div key={k} className="grid grid-cols-[84px_1fr] gap-3">
+                      <div key={k} className="grid grid-cols-[84px_minmax(0,1fr)] gap-3">
                         <dt className="font-mono text-xs uppercase tracking-[0.12em] text-ink-3">{k}</dt>
                         <dd className="text-ink-2">{v}</dd>
                       </div>
