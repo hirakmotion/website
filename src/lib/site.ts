@@ -13,10 +13,13 @@ export const site = {
   // Optional: a form backend URL (for example a Formspree endpoint). When empty,
   // the contact form opens the visitor's email app with the message filled in.
   formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "",
+  // Links with an empty href are hidden in the footer.
   socials: [
-    { label: "LinkedIn", href: "" },
-    { label: "GitHub", href: "" },
-    { label: "YouTube", href: "" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/hirakmotion" },
+    { label: "GitHub", href: "https://github.com/hirakmotion" },
+    { label: "YouTube", href: "https://www.youtube.com/@hirakmotion" },
+    { label: "Instagram", href: "" },
+    { label: "X", href: "" },
   ],
 } as const;
 
