@@ -51,6 +51,8 @@ export default function Contact() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    if (data._honey) return; // bots fill the hidden field
+    delete data._honey;
 
     if (site.formEndpoint) {
       setStatus("sending");
@@ -58,9 +60,15 @@ export default function Contact() {
         const res = await fetch(site.formEndpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            ...data,
+            _subject: `Project enquiry: ${data.building}`,
+            _replyto: data.email,
+            _template: "table",
+          }),
         });
-        if (!res.ok) throw new Error(String(res.status));
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || String(json.success) === "false") throw new Error(json.message || String(res.status));
         setStatus("sent");
         form.reset();
       } catch {
@@ -107,6 +115,7 @@ export default function Contact() {
 
         <Reveal delay={0.1}>
           <form onSubmit={onSubmit} className="rounded-2xl border border-line bg-surface/70 p-6 backdrop-blur md:p-8">
+            <input type="text" name="_honey" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="name" className="text-sm text-ink-2">

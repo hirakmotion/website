@@ -10,16 +10,18 @@ export const site = {
   // The inbox must exist (or forward to Gmail) before launch, or contact mail bounces.
   email: "hello@hirakmotion.com",
   location: "India",
-  // Optional: a form backend URL (for example a Formspree endpoint). When empty,
-  // the contact form opens the visitor's email app with the message filled in.
-  formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "",
+  // Form backend: FormSubmit (no account). The first message sends an activation
+  // email to the inbox; click it once. Afterwards FormSubmit emails a random alias
+  // that can replace the address here so it isn't in the page source.
+  // Set to "" to fall back to opening the visitor's email app instead.
+  formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT || "https://formsubmit.co/ajax/hello@hirakmotion.com",
   // Links with an empty href are hidden in the footer.
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/hirakmotion" },
     { label: "GitHub", href: "https://github.com/hirakmotion" },
     { label: "YouTube", href: "https://www.youtube.com/@hirakmotion" },
     { label: "Instagram", href: "" },
-    { label: "X", href: "" },
+    { label: "X", href: "https://x.com/hirakmotion" },
   ],
 } as const;
 
