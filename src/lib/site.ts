@@ -14,7 +14,7 @@ export const site = {
   // email to the inbox; click it once. Afterwards FormSubmit emails a random alias
   // that can replace the address here so it isn't in the page source.
   // Set to "" to fall back to opening the visitor's email app instead.
-  formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT || "https://formsubmit.co/ajax/hello@hirakmotion.com",
+  formEndpoint: process.env.NEXT_PUBLIC_FORM_ENDPOINT || "https://formsubmit.co/ajax/ceeea61cd375cc18c1f421191afcecd6",
   // Links with an empty href are hidden in the footer.
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/hirakmotion" },
