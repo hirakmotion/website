@@ -6,25 +6,14 @@ import "./globals.css";
 const sans = Instrument_Sans({ subsets: ["latin"], axes: ["wdth"], variable: "--font-instrument", display: "swap" });
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-plex-mono", display: "swap" });
 
-const title = "H-02 cycloidal actuator · Hirak Motion";
-
+// Site-wide defaults. Each page sets its own title, description and canonical (see page.tsx).
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: title, template: `%s · ${site.name}` },
+  title: { default: site.name, template: `%s · ${site.name}` },
   description: site.description,
   applicationName: site.name,
-  alternates: { canonical: "/" },
-  keywords: ["cycloidal actuator", "cycloidal drive", "robot actuator", "quasi-direct drive", "BLDC actuator", "robotics India", "Hirak Motion", "H-02"],
-  openGraph: {
-    title,
-    description: site.description,
-    url: site.url,
-    siteName: site.name,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "The H-02 cycloidal actuator on a dark background" }],
-    locale: "en_IN",
-    type: "website",
-  },
-  twitter: { card: "summary_large_image", site: "@hirakmotion", title, description: site.description, images: ["/og.png"] },
+  openGraph: { siteName: site.name, locale: "en_IN", type: "website" },
+  twitter: { card: "summary_large_image", site: "@hirakmotion" },
 };
 
 export const viewport: Viewport = {

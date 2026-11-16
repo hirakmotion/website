@@ -7,11 +7,20 @@
    Round 3: normals are rebuilt in the browser with a crease angle (sharp at edges, smooth on curves), so the
    simplified meshes shade like the renders instead of showing streaks; lighting keeps black PLA black;
    a soft contact shadow sits under the motor shell. */
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+// three.js (about 240 KB over the wire) is fetched only when the viewer comes near the screen.
+let THREE, GLTFLoader, OrbitControls, RoomEnvironment, toCreasedNormals;
+async function loadThree() {
+  if (THREE) return;
+  const m = await Promise.all([
+    import('three'),
+    import('three/addons/loaders/GLTFLoader.js'),
+    import('three/addons/controls/OrbitControls.js'),
+    import('three/addons/environments/RoomEnvironment.js'),
+    import('three/addons/utils/BufferGeometryUtils.js'),
+  ]);
+  THREE = m[0]; GLTFLoader = m[1].GLTFLoader; OrbitControls = m[2].OrbitControls;
+  RoomEnvironment = m[3].RoomEnvironment; toCreasedNormals = m[4].toCreasedNormals;
+}
 
 // The model ships as a GLB wrapped in JSON (base64), because the host serves .json but not .glb.
 async function loadModel(url) {
@@ -50,6 +59,7 @@ function mount(root) {
 
   async function start() {
     say('Loading the model…');
+    await loadThree();
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); }
     catch (e) { say('This browser has no WebGL, so this is a render instead.'); return; }
@@ -107,7 +117,9 @@ function mount(root) {
     }
     function place(sph, keepDir) {
       const d = keepDir ? cam.position.clone().sub(controls.target).normalize() : dir;
-      const dist = sph.radius / Math.sin(THREE.MathUtils.degToRad(cam.fov / 2)) * 1.05;
+      const half = THREE.MathUtils.degToRad(cam.fov / 2);
+      const fit = Math.min(half, Math.atan(Math.tan(half) * cam.aspect));   // fit the narrower of height and width
+      const dist = sph.radius / Math.sin(fit) * 1.05;
       controls.target.copy(sph.center); cam.position.copy(sph.center).addScaledVector(d, dist);
       controls.minDistance = dist * 0.45; controls.maxDistance = dist * 2.2;
     }

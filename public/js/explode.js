@@ -16,9 +16,17 @@
       im.onload = () => { if (i === want) draw(i, true); };
       frames[i] = im; return im;
     }
-    // first frame immediately, the rest progressively
-    load(0); load(n - 1);
-    let k = 1; (function more() { for (let j = 0; j < 6 && k < n - 1; j++, k++) load(k); if (k < n - 1) setTimeout(more, 60); })();
+    // first frame now; the other 71 only after the page has loaded and the section is within half a screen
+    load(0);
+    let k = 1, started = false;
+    function more() { for (let j = 0; j < 6 && k < n - 1; j++, k++) load(k); if (k < n - 1) setTimeout(more, 60); }
+    function startRest() { if (started) return; started = true; load(n - 1); more(); }
+    function arm() {
+      if (!('IntersectionObserver' in window)) return startRest();
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); startRest(); } }, { rootMargin: '25% 0px' });
+      io.observe(sec);
+    }
+    if (document.readyState === 'complete') arm(); else window.addEventListener('load', arm, { once: true });
     function size() {
       const r = canvas.getBoundingClientRect(), d = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(r.width * d); canvas.height = Math.round(r.height * d); shown = -1; draw(want, true);
@@ -30,7 +38,8 @@
     function draw(i, force) {
       const j = nearestLoaded(i); if (j < 0 || (j === shown && !force)) return;
       const im = frames[j], cw = canvas.width, ch = canvas.height;
-      const s = Math.min(cw / im.naturalWidth, ch / im.naturalHeight);
+      const z = cw < ch ? 1.35 : 1;   // portrait stage (phones): the frames are landscape with empty margins, so zoom in
+      const s = Math.min(cw / im.naturalWidth, ch / im.naturalHeight) * z;
       const w = im.naturalWidth * s, h = im.naturalHeight * s;
       ctx.clearRect(0, 0, cw, ch); ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); shown = j;
     }

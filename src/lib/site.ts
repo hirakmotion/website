@@ -5,7 +5,7 @@ export const site = {
   shortName: "Hirak",
   tagline: "Motors, drives and actuators, engineered in India.",
   description:
-    "H-02 is a 40:1 cycloidal actuator: a 5010 motor, two opposed cycloidal discs and 41 pins in a 70 mm housing. Designed, printed and tested in India by Hirak Motion.",
+    "H-02 is a 40:1 cycloidal actuator for robot joints: 5010 motor, two discs, 41 pins, Ø70 × 62 mm. Working prototype, built in India. Send your joint specs.",
   url: "https://hirakmotion.com",
   // The inbox must exist (or forward to Gmail) before launch, or contact mail bounces.
   email: "hello@hirakmotion.com",
