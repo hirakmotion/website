@@ -9,7 +9,7 @@
     e.preventDefault();
     if (form.querySelector('[name=_honey]').value) return;   // bots fill the hidden field
     const em = document.getElementById('r-email');
-    if (!em.value || !em.checkValidity()) { em.setAttribute('aria-invalid', 'true'); note.dataset.state = 'error'; note.textContent = 'Add an email address so we can reply.'; em.focus(); return; }
+    if (!em.value || !em.checkValidity()) { em.setAttribute('aria-invalid', 'true'); note.dataset.state = 'error'; note.textContent = em.value ? 'That email address does not look right.' : 'Add an email address so we can reply.'; em.focus(); return; }
     em.removeAttribute('aria-invalid');
     const data = {
       email: v('r-email'), 'Peak torque (N·m)': v('r-peak'), 'Continuous torque (N·m)': v('r-cont'), 'Top speed (rpm)': v('r-speed'),

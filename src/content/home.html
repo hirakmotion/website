@@ -37,7 +37,7 @@
     </div>
     <div class="x" data-explode data-frames="72" data-path="/assets/seq/f" data-ext=".webp">
       <div class="x-stick wrap">
-        <div class="stagebg"><canvas aria-label="Exploded view of the H-02 that comes apart as you scroll" role="img"></canvas></div>
+        <div class="stagebg"><noscript><img src="/assets/seq/f071.webp" alt="Exploded view of the H-02" width="1200" height="750"></noscript><canvas aria-label="Exploded view of the H-02 that comes apart as you scroll" role="img"></canvas></div>
         <ol class="x-parts">
           <li data-at="0.01">Housing screws</li><li data-at="0.06">Front housing</li><li data-at="0.11">Top bearing</li><li data-at="0.16">Output screws</li>
           <li data-at="0.21">Output flange</li><li data-at="0.26">Upper disc</li><li data-at="0.31">Eccentric shaft</li><li data-at="0.36">Ring</li>
@@ -168,14 +168,14 @@
         <div class="fit" data-cycloid>
           <div class="cy">
             <canvas aria-label="Animated H-02 reducer: the disc wobbles inside 41 pins, Detail A magnifies one pin, and two dials show the motor turning forty times for one turn of the output, in the opposite direction" role="img"></canvas>
-            <div class="row"><span>Drawn to scale from the CAD dimensions. The copper dot marks one lobe: it moves one pin per motor turn. The output turns the other way.</span><button class="ghost" type="button" data-c="play" aria-pressed="false">Pause</button></div>
+            <div class="row"><span>Drawn to scale from the CAD dimensions. The copper dot marks one lobe: it moves one pin per motor turn. The output turns the other way.</span><button class="ghost" type="button" data-c="play" aria-label="Pause animation">Pause</button></div>
           </div>
           <div class="calc">
             <div class="fields">
               <label for="f-pins">Ring pins (7–61)<input id="f-pins" type="number" min="7" max="61" step="1" value="41" data-c="pins"></label>
-              <label for="f-kv">Motor KV<input id="f-kv" type="number" min="10" step="10" value="360" data-c="kv"></label>
-              <label for="f-volt">Supply (V)<input id="f-volt" type="number" min="1" step="0.1" value="11.1" data-c="volt"></label>
-              <label for="f-tq">Torque needed (N·m)<input id="f-tq" type="number" min="0.1" step="0.1" value="5" data-c="torque"></label>
+              <label for="f-kv">Motor KV<input id="f-kv" type="number" min="10" step="10" value="360" max="100000" data-c="kv"></label>
+              <label for="f-volt">Supply (V)<input id="f-volt" type="number" min="1" step="0.1" value="11.1" max="1000" data-c="volt"></label>
+              <label for="f-tq">Torque needed (N·m)<input id="f-tq" type="number" min="0.1" step="0.1" value="5" max="10000" data-c="torque"></label>
               <label for="f-eff">Gear efficiency (%)<input id="f-eff" type="number" min="10" max="100" step="1" value="70" data-c="eff"></label>
             </div>
             <dl class="result">
@@ -198,11 +198,11 @@
       </div>
       <div class="v" data-viewer data-theme="dark" data-glb="/assets/h02_model.json" data-offsets="/assets/h02_explode.json" data-exposure="0.7" data-env="0.35">
         <div class="v-stage"><img class="v-poster" src="/assets/h02_top.webp" width="1098" height="1191" alt="The H-02 actuator seen from above, showing the output flange and its six screws" loading="lazy"></div>
-        <div class="v-bar">
-          <label for="xp">Assembled<input id="xp" type="range" min="0" max="100" value="0" data-v="explode">Exploded</label>
+        <div class="v-bar" hidden>
+          <label for="xp">Assembled<input id="xp" type="range" min="0" max="100" value="0" data-v="explode" aria-label="Explode amount">Exploded</label>
           <button class="ghost" type="button" data-v="reset">Reset view</button>
         </div>
-        <p data-v-status>The 3D model loads when you reach it.</p>
+        <p data-v-status role="status">A render of H-02 from above.</p>
       </div>
     </div>
   </section>
@@ -243,7 +243,7 @@
           <li>We check them against what we can build and test.</li>
           <li>We reply by email with a proposal, or the reasons it won't work.</li>
         </ol>
-        <form id="rfq-form" novalidate><input type="text" name="_honey" tabindex="-1" autocomplete="off" hidden aria-hidden="true">
+        <form id="rfq-form" novalidate><noscript><p class="small w3">This form needs JavaScript. Please email hello@hirakmotion.com.</p></noscript><input type="text" name="_honey" tabindex="-1" autocomplete="off" hidden aria-hidden="true">
           <label for="r-peak">Peak torque (N·m)<input id="r-peak" inputmode="decimal" placeholder="e.g. 12"></label>
           <label for="r-cont">Continuous torque (N·m)<input id="r-cont" inputmode="decimal" placeholder="e.g. 5"></label>
           <label for="r-speed">Top speed (rpm)<input id="r-speed" inputmode="decimal" placeholder="e.g. 120"></label>
@@ -251,8 +251,8 @@
           <label for="r-volt">Supply (V)<input id="r-volt" inputmode="decimal" placeholder="e.g. 24"></label>
           <label for="r-bus">Interface<select id="r-bus"><option>Not sure yet</option><option>CAN</option><option>RS-485</option><option>PWM / servo</option><option>Other</option></select></label>
           <label for="r-qty">Quantity<input id="r-qty" inputmode="numeric" placeholder="e.g. 6"></label>
-          <label class="w2" for="r-email">Email (required)<input id="r-email" type="email" required autocomplete="email" placeholder="you@lab.edu"></label>
-          <label class="w3" for="r-notes">Application<textarea id="r-notes" rows="3" placeholder="Shoulder joint of a 6-DOF arm, compliant scooping"></textarea></label>
+          <label class="w2" for="r-email">Email (required)<input id="r-email" name="email" type="email" maxlength="200" required autocomplete="email" placeholder="you@lab.edu"></label>
+          <label class="w3" for="r-notes">Application<textarea id="r-notes" rows="3" maxlength="2000" placeholder="Shoulder joint of a 6-DOF arm, compliant scooping"></textarea></label>
           <div class="w3" style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center"><button class="btn" type="submit">Send specs</button><p class="small" id="r-note" aria-live="polite">Or email <a class="addr" href="mailto:hello@hirakmotion.com">hello@hirakmotion.com</a></p></div>
         </form>
       </div>
@@ -269,6 +269,7 @@
     <p class="legal"><span>© 2026 Hirak Motion</span><a href="#main">Back to top</a></p>
   </div>
 </footer>
+<noscript><style>.x{height:auto}.x-stick{position:static;height:auto}.cy canvas,[data-c=play],.calc .fields{display:none}</style></noscript>
 <script defer src="/js/send.js"></script>
 <script defer src="/js/explode.js"></script>
 <script defer src="/js/cycloid.js"></script>

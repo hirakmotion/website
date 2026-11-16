@@ -9,7 +9,10 @@
       return true;
     }
     try {
+      const ctl = 'AbortController' in window ? new AbortController() : null;
+      if (ctl) setTimeout(() => ctl.abort(), 15000);   // a hung request must not leave the form stuck on Sending…
       const res = await fetch(cfg.endpoint, {
+        signal: ctl ? ctl.signal : undefined,
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ ...data, _subject: subject, _replyto: data.email, _template: 'table' }),

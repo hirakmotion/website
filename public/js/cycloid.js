@@ -127,12 +127,16 @@
       set('in', tin.toFixed(2)); set('out', tout.toFixed(3));
     }
     function calc() {
-      const v = k => { const el = q(k); return el ? parseFloat(el.value) : NaN; };
-      const ratio = N - 1, kv = v('kv'), volt = v('volt'), tq = v('torque'), eff = v('eff') / 100;
+      const num = k => { const el = q(k), x = el ? parseFloat(el.value) : NaN; return Number.isFinite(x) ? x : NaN; };
       const set = (k, val) => { const el = o(k); if (el) el.textContent = val; };
+      const fmt = (x, d) => x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+      const ratio = N - 1, kv = num('kv'), volt = num('volt'), tq = num('torque'), eff = num('eff');
+      const okKv = kv > 0 && kv <= 1e5, okV = volt > 0 && volt <= 1000, okT = tq > 0 && tq <= 1e4, okE = eff >= 10 && eff <= 100;
       set('ratio', `${ratio}:1`); set('pins', N); set('lobes', N - 1);
-      if (kv > 0 && volt > 0) set('rpm', Math.round(kv * volt / ratio).toLocaleString('en-IN'));
-      if (kv > 0 && tq > 0 && eff > 0) { const kt = 8.27 / kv; set('amps', (tq / (ratio * eff * kt)).toFixed(1)); set('kt', kt.toFixed(4)); }
+      set('rpm', okKv && okV ? fmt(kv * volt / ratio, 0) : '–');
+      set('kt', okKv ? (8.27 / kv).toFixed(4) : '–');
+      set('amps', okKv && okT && okE ? fmt(tq / (ratio * (eff / 100) * (8.27 / kv)), 1) : '–');
+      [['kv', okKv], ['volt', okV], ['torque', okT], ['eff', okE]].forEach(([k, ok]) => { const el = q(k); if (el) { if (ok) el.removeAttribute('aria-invalid'); else el.setAttribute('aria-invalid', 'true'); } });
     }
     function frame(t) {
       if (playing) { const dt = last ? Math.min(50, t - last) : 16; theta += dt * 0.0032; draw(); }   // motor ~0.5 turn/s
@@ -142,8 +146,9 @@
     new IntersectionObserver(es => { const v = es.some(e => e.isIntersecting); if (v && !visible) { visible = true; requestAnimationFrame(frame); } else if (!v) visible = false; }).observe(root);
     const pins = q('pins');
     if (pins) pins.addEventListener('input', () => { N = Math.max(7, Math.min(61, Math.round(+pins.value) || 41)); e = Math.min(E, R / (N * 1.05)); rebuild(); calc(); draw(); });
+    if (pins) pins.addEventListener('change', () => { pins.value = N; });
     const play = q('play');
-    if (play) { play.textContent = playing ? 'Pause' : 'Play'; play.addEventListener('click', () => { playing = !playing; play.textContent = playing ? 'Pause' : 'Play'; play.setAttribute('aria-pressed', String(!playing)); }); }
+    if (play) { play.textContent = playing ? 'Pause' : 'Play'; play.setAttribute('aria-label', playing ? 'Pause animation' : 'Play animation'); play.addEventListener('click', () => { playing = !playing; play.textContent = playing ? 'Pause' : 'Play'; play.setAttribute('aria-label', playing ? 'Pause animation' : 'Play animation'); }); }
     ['kv', 'volt', 'torque', 'eff'].forEach(k => { const el = q(k); if (el) el.addEventListener('input', calc); });
     if ('ResizeObserver' in window) new ResizeObserver(size).observe(cv); else window.addEventListener('resize', size);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);

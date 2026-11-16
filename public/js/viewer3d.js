@@ -51,9 +51,12 @@ function mount(root) {
   const status = root.querySelector('[data-v-status]'), poster = root.querySelector('.v-poster');
   const dark = root.dataset.theme === 'dark';
   const say = t => { if (status) status.textContent = t; };
-  let started = false;
+  const bar = root.querySelector('.v-bar');
+  let started = false, timer;
+  // start only after the viewer has stayed near the screen for a moment, so a jump past it (e.g. to Contact) costs nothing
   const io = new IntersectionObserver(es => {
-    if (!started && es.some(e => e.isIntersecting)) { started = true; io.disconnect(); start().catch(err => { console.error(err); say('The 3D view could not load here, so this is a render instead.'); }); }
+    const on = es.some(e => e.isIntersecting); clearTimeout(timer);
+    if (on && !started) timer = setTimeout(() => { started = true; io.disconnect(); start().catch(err => { console.error(err); say('The 3D view could not load here, so this is a render instead.'); }); }, 400);
   }, { rootMargin: '300px' });
   io.observe(root);
 
@@ -82,6 +85,11 @@ function mount(root) {
     controls.maxPolarAngle = Math.PI * 0.62;   // don't go far below the floor, where the shadow gives the trick away
     controls.autoRotate = !matchMedia('(prefers-reduced-motion: reduce)').matches; controls.autoRotateSpeed = 0.8;
     controls.addEventListener('start', () => { controls.autoRotate = false; });
+    // the wheel scrolls the page until the visitor clicks into the stage; then it zooms
+    controls.enableZoom = false;
+    renderer.domElement.addEventListener('pointerdown', () => { controls.enableZoom = true; });
+    stage.addEventListener('pointerleave', () => { controls.enableZoom = false; });
+    const envI = +(root.dataset.env || 0.55);
 
     const [gltf, offs] = await Promise.all([loadModel(root.dataset.glb), fetch(root.dataset.offsets).then(r => r.json())]);
     const model = gltf.scene; scene.add(model);
@@ -93,7 +101,7 @@ function mount(root) {
         const m = o.material;
         if (m && m.isMeshStandardMaterial && !seen.has(m)) {   // materials are shared between parts: adjust each once
           seen.add(m);
-          if (m.metalness < 0.5) { if (m.color.getHSL({}).l < 0.08) { m.roughness = 0.62; m.color.setRGB(0.022, 0.022, 0.024); } }  // black PLA: satin, stays dark
+          if (m.metalness < 0.5) { if (m.color.getHSL({}).l < 0.08) { m.roughness = 0.62; m.color.setRGB(0.022, 0.022, 0.024); } m.envMapIntensity = envI; }  // black PLA: satin, stays dark
           else { m.roughness = Math.max(0.32, m.roughness); m.color.multiplyScalar(0.62); m.envMapIntensity = 0.7; }  // steel, motor bell
         }
       }
@@ -130,16 +138,19 @@ function mount(root) {
     resize(); place(frameFor(0), false);
     if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage); else addEventListener('resize', resize);
 
-    let visible = true;
-    new IntersectionObserver(es => { visible = es.some(e => e.isIntersecting); if (visible) requestAnimationFrame(loop); }).observe(root);
+    let visible = true, running = false;
     function loop() {
+      if (!visible) { running = false; return; }
       if (Math.abs(target - t) > 0.0005) { t += (target - t) * 0.12; place(frameFor(t), true); if (slider) slider.value = Math.round(t * 100); }
       controls.update(); renderer.render(scene, cam);
-      if (visible) requestAnimationFrame(loop);
+      requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
+    const kick = () => { if (!running) { running = true; requestAnimationFrame(loop); } };
+    new IntersectionObserver(es => { visible = es.some(e => e.isIntersecting); if (visible) kick(); }).observe(root);
+    kick();
+    if (bar) bar.hidden = false;
     if (poster) poster.classList.add('is-hidden');
-    say('Drag to turn. Scroll or pinch to zoom.');
+    say('Drag to turn. Click the model first to zoom with the wheel, or pinch.');
 
     if (slider) slider.addEventListener('input', () => { target = t = slider.value / 100; place(frameFor(t), true); });
     root.querySelectorAll('[data-v]').forEach(btn => {

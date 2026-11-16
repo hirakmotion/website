@@ -13,7 +13,7 @@
     function load(i) {
       if (frames[i]) return frames[i];
       const im = new Image(); im.decoding = 'async'; im.src = path + pad(i) + ext;
-      im.onload = () => { if (i === want) draw(i, true); };
+      im.onload = () => draw(want, true);
       frames[i] = im; return im;
     }
     // first frame now; the other 71 only after the page has loaded and the section is within half a screen
