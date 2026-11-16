@@ -316,3 +316,5 @@ body .hc-launch:hover{border-color:var(--fg-3)}
   .x-parts{font-size:12px;column-gap:12px}
   .x-parts li{padding:3px 0;grid-template-columns:24px 1fr}
 }
+/* narrow phones (≤374px, e.g. iPhone SE 1st gen): keep brand + Contact on one line */
+@media (max-width:374px){.top .wrap{gap:12px}.top nav{display:none}.top .cta{margin-left:auto}}
