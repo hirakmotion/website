@@ -318,3 +318,11 @@ body .hc-launch:hover{border-color:var(--fg-3)}
 }
 /* narrow phones (≤374px, e.g. iPhone SE 1st gen): keep brand + Contact on one line */
 @media (max-width:374px){.top .wrap{gap:12px}.top nav{display:none}.top .cta{margin-left:auto}}
+/* hero headline: two lines take turns in the same spot (height = the taller one, so nothing below moves) */
+.rot{display:grid}
+.rot>span{grid-area:1/1;animation:rot 14s ease-in-out infinite}
+.rot>span+span{opacity:0;animation-delay:-7s}
+@keyframes rot{0%,43%{opacity:1;transform:none}47%,97%{opacity:0;transform:translateY(.12em)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rot>span{animation:none}.rot>span+span{display:none}}
+@media print{.rot>span{animation:none}.rot>span+span{display:none}}
+@media (min-width:861px){.rot>span+span{font-size:.8em;line-height:1.02;align-self:center}}
