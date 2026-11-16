@@ -5,7 +5,7 @@ export const site = {
   shortName: "Hirak",
   tagline: "Motors, drives and actuators, engineered in India.",
   description:
-    "Hirak Motion designs motors, drives and actuators that turn electricity into precise, measurable motion for robots, drones and machines. Engineered and tested in India.",
+    "H-02 is a 40:1 cycloidal actuator: a 5010 motor, two opposed cycloidal discs and 41 pins in a 70 mm housing. Designed, printed and tested in India by Hirak Motion.",
   url: "https://hirakmotion.com",
   // The inbox must exist (or forward to Gmail) before launch, or contact mail bounces.
   email: "hello@hirakmotion.com",
@@ -24,12 +24,3 @@ export const site = {
     { label: "X", href: "https://x.com/hirakmotion" },
   ],
 } as const;
-
-export const nav = [
-  { label: "Platform", href: "#platform" },
-  { label: "Explorer", href: "#explorer" },
-  { label: "Custom", href: "#custom" },
-  { label: "Why India", href: "#why" },
-  { label: "Lab", href: "#lab" },
-  { label: "Roadmap", href: "#roadmap" },
-] as const;
